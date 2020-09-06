@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <style>
+       body{
+           background-image: url(git4.png);
+         
+       }
+       .first{
+           color: rgb(1, 7, 56);
+       }
+       .info{
+           color: rgb(73, 0, 0);
+       }
+   </style>
+    <title>Rendering HTML File</title>
+</head>
+<body>
+    <button id="button">Show Data</button>
+    <br>
+   <div class="first">
+    <h1>List of GitHub Users</h1>
+   </div>
+    <div id="users"></div>
+    
+    <script>
+        document.getElementById('button').addEventListener('click', showData);
+        function showData() {
+            var req = new XMLHttpRequest();
+            req.open('GET', 'https://api.github.com/users', true);
+            req.onload = function(){
+                if(req.status==200){
+                    var users = JSON.parse(req.responseText);
+                    var display ='';
+                    for (var i in users){
+                        display += 
+                        '<img src = "'+users[i].avatar_url+'" width="200px" height="200px">'+
+                           '<div class="info">'+
+                            '<ul>' +
+                            
+                            '<li><h2>ID:'+users[i].id+'</h2></li>'+
+                            '<li> <a href='+users[i].followers_url+'><h2>Followers</h2> </a>'+
+                           '<li><h2>Name:'+users[i].login+'</h2></li>'+
+                            '<li><h2>repos:'+users[i].repos_url+'</h2></li>'+
+                            '<li><h2>Organization:'+users[i].organizations_url+'</h2></li>'+
+
+                            '</ul>'+
+                            '</div>';
+
+                           
+
+                    }
+                    document.getElementById('users').innerHTML=display;
+                }
+            }
+            req.send();
+        }
+    </script>
+</body>
+</html>
